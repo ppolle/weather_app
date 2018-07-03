@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
 from django.conf import settings
+from .forms import SignUpForm
+from django.contrib import messages
 import requests
 import nexmo
 
@@ -40,3 +42,31 @@ def index(request):
 		'icon':response['weather'][0]['icon'],
 		}
 		return render(request,'weather/index.html',{"city_weather":city_weather})
+
+def signup(request):
+	'''
+	View to create a user instance
+	'''
+	if request.method == 'POST':
+		form = SignUpForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			user.save()
+
+			user.refresh_from_db()
+			user.profile.phone_number = form.cleaned_data.get('phone_number')
+			
+			user.save()
+
+			raw_password = form.cleaned_data.get('password1')
+			user = authenticate(username = user.username,password = raw_password)
+			user_login(request,user)
+			messages.success(request, 'Success! You have succesfullly created a new sacco!')
+			return redirect('index')
+		# else:
+		# 	messages.error(request,f'Error having the form as valid')
+		# 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+	else:
+		form = SignUpForm()
+	return render(request,'weather/authenticate/signup.html',{"form":form})
+
