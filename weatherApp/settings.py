@@ -122,3 +122,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 WEATHER_API = config('WEATHER_API', default='')
+NEXMO_KEY = config('NEXMO_KEY', default='')
+NEXMO_SECRET = config('NEXMO_SECRET', default='')

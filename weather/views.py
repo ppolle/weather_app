@@ -1,6 +1,9 @@
 from django.shortcuts import render,redirect
 from django.conf import settings
 import requests
+import nexmo
+
+client = nexmo.Client(key=settings.NEXMO_KEY, secret=settings.NEXMO_SECRET)
 
 # Create your views here.
 def index(request):
