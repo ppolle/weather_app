@@ -63,9 +63,7 @@ def signup(request):
 			user_login(request,user)
 			messages.success(request, 'Success! You have succesfullly created a new sacco!')
 			return redirect('index')
-		# else:
-		# 	messages.error(request,f'Error having the form as valid')
-		# 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+		
 	else:
 		form = SignUpForm()
 	return render(request,'weather/authenticate/signup.html',{"form":form})
