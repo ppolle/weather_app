@@ -68,3 +68,31 @@ def signup(request):
 		form = SignUpForm()
 	return render(request,'weather/authenticate/signup.html',{"form":form})
 
+def login_user(request):
+    '''
+    View function that will manage user authentication
+    '''
+    if request.GET.get('username') and request.GET.get("password"):
+        username = request.GET.get("username")
+        password = request.GET.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            user_login(request, user)
+
+            messages.success(request, f'Welcome back!')
+            return redirect('index')
+            
+        else:
+            messages.error(
+                request, 'wrong username or password combination. Try again!')
+            return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        messages.error(
+            request, 'You did not input any username or password. Try Again!')
+        return redirect(request.META.get('HTTP_REFERER'))
+
+def login(request):
+	'''
+	This view function will render the login view template
+	'''
+	return render(request,'weather/authenticate/login.html')
