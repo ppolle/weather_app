@@ -4,6 +4,8 @@ from .forms import SignUpForm
 from django.contrib import messages
 import requests
 import nexmo
+import urllib
+import socket
 
 client = nexmo.Client(key=settings.NEXMO_KEY, secret=settings.NEXMO_SECRET)
 
@@ -44,7 +46,15 @@ def index(request):
 			}
 			return render(request,'weather/index.html',{"city_weather":city_weather})
 	except:
-		return render(request,'weather/error.html')
+		try:
+			# url = "https:/www.google.com"
+			# urllib.urlopen(url)
+			socket.create_connection(("www.google.com", 80))
+			messages = "Sorry! But no such city exists"
+			return render(request,'weather/error.html',{"messages":messages})
+		except:
+			messages = "Sorry! You can only access this service when you are connected to the internet"
+			return render(request,'weather/error.html',{"messages":messages})
 
 
 def signup(request):
