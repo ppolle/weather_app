@@ -73,7 +73,7 @@ def signup(request):
 			raw_password = form.cleaned_data.get('password1')
 			user = authenticate(username = user.username,password = raw_password)
 			user_login(request,user)
-			messages.success(request, 'Success! You have succesfullly created a new sacco!')
+			messages.success(request, 'Success! You have succesfullly created a new Account!')
 			return redirect('index')
 		
 	else:
